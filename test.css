@@ -1,0 +1,212 @@
+* {
+      padding: 0px;
+      margin: 0px;
+      box-sizing: border-box;
+}
+
+
+img {
+      
+      max-height: 100px;
+}
+
+
+.main {
+  width: 100%;
+}
+
+.table {
+  background-color: green;
+  height: 500px;
+  width: 900px;
+  border-radius: 50%;
+  margin: 0 auto;
+  border: 1em solid black;
+}
+
+
+
+
+.board img {
+      margin: 5px;
+}
+
+.tableCards {
+      display: flex;
+      position: absolute;
+      top: 50%;
+      left: 35%;
+}
+
+
+
+.player1 {
+      position: absolute;
+      top: 0;
+      left: 45%;
+}
+
+
+.player2 {
+      position: absolute;
+      top: 10%;
+      right: 15%;
+}
+
+
+.player3 {
+      position: absolute;
+      top: 45%;
+      right: 0%;
+}
+
+
+
+.player4 {
+      position: absolute;
+      top: 80%;
+      left: 45%;
+}
+
+.player5 {
+      position: absolute;
+      top: 80%;
+      left: 15%;
+}
+
+
+.player6 {
+      position: absolute;
+      top: 45%;
+      left: 0%;
+}
+
+.player7 {
+      position: absolute;
+      top: 5%;
+      left: 15%;
+}
+
+
+.stackBox {
+      border: 1px solid green;
+      background: white;
+      width: 33%;
+      text-align: center;
+}
+
+.potHeading {
+      position: absolute;
+      top: -15%;
+      left: 50%;
+      text-align: center;
+      display: inline-flex;
+}
+
+.potBox {
+      margin-left: 5px;
+      background: black;
+      color: yellow;
+      padding-left: 5px;
+      padding-right: 5px;
+}
+
+
+
+
+.inputRaise {
+      position: absolute;
+      left: -60%;
+      bottom: 10%;
+      width: 60px;     
+}
+
+#raiseSlide {
+      width: 100px;
+      height: 20px;
+      position: absolute;
+      transform: rotate(270deg);
+      left: -45%;
+      bottom: 30%;
+
+}
+
+.raise {
+      display: inline-block;
+}
+
+
+.sliderNumber {
+      text-align: center;
+}
+
+.betArea1 {
+      bottom: -10%;
+      left: 50%;
+}
+
+.betArea2 {
+      bottom: -5%;
+      left: -20%;
+}
+
+.betArea3 {
+      bottom: 50%;
+      left: -10%;
+}
+
+.betArea4 {
+      top: -5%;
+      left: 50%;
+}
+
+.betArea5 {
+      top: -5%;
+      right: -20%;
+}
+
+.betArea6 {
+      bottom: 50%;
+      right: -25%;
+}
+
+.betArea7 {
+      bottom: -10%;
+      right: 5%;
+}
+
+.folded {
+      opacity: .2;
+}
+
+.showCard {
+      font-size: 11px;
+      position: absolute;
+      top: 10%;
+      left: 80%;
+}
+
+.noShow {
+      font-size: 11px;
+      position: absolute;
+      top: 10%;
+      left: 120%;
+}
+
+
+.winnersCircle {
+      font-size: 16px;
+      color: white;
+      position: absolute;
+      height: 60px;
+      width: 200px;
+      margin: 0 auto;
+      top: 35%;
+      left: 30%;
+      border-radius: 5%;
+      background: black;
+      border: 2px solid red;
+      text-align: center;
+      padding-top: 15px;
+}
+
