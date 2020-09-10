@@ -34,7 +34,7 @@ img {
 .tableCards {
       display: flex;
       position: absolute;
-      top: 50%;
+      top: 40%;
       left: 35%;
 }
 
@@ -57,28 +57,28 @@ img {
 .player3 {
       position: absolute;
       top: 45%;
-      right: 0%;
+      right: 5%;
 }
 
 
 
 .player4 {
       position: absolute;
-      top: 80%;
+      bottom: 10%;
       left: 45%;
 }
 
 .player5 {
       position: absolute;
-      top: 80%;
+      bottom: 10%;
       left: 15%;
 }
 
 
 .player6 {
       position: absolute;
-      top: 45%;
-      left: 0%;
+      top: 40%;
+      left: 5%;
 }
 
 .player7 {
