@@ -1103,13 +1103,13 @@ deck.deal();
 
 
 
-for (let bettor in bettors) {
-	delete bettors[bettor];
-}
-
 betCount = players.length;
 
 pot = 0;
+allIn = {};
+allInPot ={};
+bettors = [];
+betAmount = [];
 const thisbigBlind = document.querySelector('.bigBlindLabel');
 const thissmallBlind = document.querySelector('.smallBlindLabel');
 document.querySelectorAll('.folded').forEach(player => player.classList.remove('folded'));
@@ -1132,6 +1132,8 @@ if (document.querySelector('.winnersCircle')) {
 document.querySelector('.main').removeChild(document.querySelector('.winnersCircle'));
 }
 }
+
+
 
 init(numberOfGames%players.length);
 // to make the person active
@@ -1588,20 +1590,22 @@ if (Object.values(bettors).every((el,index,arr) => el === arr[0]) && betCount <=
 	active.querySelectorAll('button, input').forEach(el => {
 	active.removeChild(el);
 	});
-	if (allInPot) {
+	if (Object.keys(allInPot).length >0) {
 		const uniqueAllIns = [...new Set(Object.values(allInPot))];
 		let min2 = 0;
-		wait();
 		const allInInterval = setInterval(wait, 4000);
 	function wait() {
 		if (Object.keys(allInPot).length ===0) {
 			clearInterval(allInInterval);
+			if (bettors && pot !==0) {
+				deck.winning(pot,stack);
+				}
+				newGame();
 		} 
 
 		else 
 		{
 		const min1 = Math.min(...Object.values(allInPot));
-		console.log(min1,min2);
 		pot -= (min1-min2);
 		deck.winning((min1-min2),stack);
 		for (let key in allInPot) {
@@ -1614,20 +1618,11 @@ if (Object.values(bettors).every((el,index,arr) => el === arr[0]) && betCount <=
 			min2 = min1;
 			}
 		}
-		
-
-		// this will wait till the interval timer is done
-		setTimeout(() => {
-			if (bettors && pot !==0) {
-				deck.winning(pot,stack);
-				}
-				newGame();
-		}, 4000*uniqueAllIns.length);
 			
 			
 		}
 
-	else if (bettors && pot !==0 && !allInPot) {
+	else if (bettors && pot !==0 && Object.keys(allInPot).length ===0) {
 		deck.winning(pot,stack);
 		newGame();
 	};
