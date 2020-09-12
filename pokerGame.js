@@ -12,8 +12,7 @@ let allInPot = {};
 let betAmount = [];
 // create a set for everyone in the game
 players.forEach((el,i) => {
-	// stack.push(Math.abs(Math.floor(Math.random() * 1000)));
-	stack.push(3);
+	stack.push(Math.abs(Math.floor(Math.random() * 1000)));
 	const playerDiv = document.createElement('div');
 	playerDiv.className = `player${i+1}`;
 	document.querySelector('.firstDeal').appendChild(playerDiv);
@@ -181,7 +180,7 @@ buttonR.appendChild(raiseBtn);
 if (stack[begginerPlayer-1] > bigBlindValue*2) {
 raiseBtn.textContent = bigBlindValue*2;
 } else if (stack[begginerPlayer-1] > bigBlindValue) {
-	raiseBtn.textContent = stack[begginerPlayer];
+	raiseBtn.textContent = bigBlindValue;
 } else {
 	buttonR.disabled = true;
 	buttonR.style.display = 'none';
@@ -193,8 +192,8 @@ raiseBtn.textContent = bigBlindValue*2;
 
 
 // allow for instances of big Blind/small blind taking them over the all in limit
+if (stack[begginerPlayer-1] > bigBlindValue) {
 
-if (buttonR.disabled = false) {
 const inputRaise = document.createElement("input");
 inputRaise.className = 'inputRaise';
 const placeholder = document.createAttribute('placeholder');
@@ -245,7 +244,6 @@ document.querySelector(`.player${begginerPlayer}`).appendChild(raiseBar);
 document.querySelector(`.player${begginerPlayer}`).appendChild(inputRaise);
 
 }
-
 
 // because the first player needs to call the big blind
 const callNum = document.createElement('div');
@@ -1278,7 +1276,7 @@ if (maxRaise*2 < stack[i]) {
 
 // create inputRaise
 
-if (buttonR.disabled = false) {
+if (stack[i] > maxRaise) {
 
 const inputRaise = document.createElement("input");
 inputRaise.className = 'inputRaise';
@@ -1609,10 +1607,26 @@ if (Object.values(bettors).every((el,index,arr) => el === arr[0]) && betCount <=
 	});
 	if (Object.keys(allInPot).length >0) {
 		let min2 = 0;
+		function calcAll() {
+			const min1 = Math.min(...Object.values(allInPot));
+			pot -= (min1-min2);
+			deck.winning((min1-min2),stack);
+			for (let key in allInPot) {
+				if (allInPot[key] === min1) {
+					delete allInPot[key];
+					delete bettors[key];
+					
+						}
+					}
+				min2 = min1;
+				}
+				calcAll();
 		const allInInterval = setInterval(wait, 4000);
 	function wait() {
 		if (Object.keys(allInPot).length ===0) {
+			if (allInInterval) {
 			clearInterval(allInInterval);
+			}
 			if (bettors && pot !==0) {
 				deck.winning(pot,stack);
 				}
@@ -1621,20 +1635,9 @@ if (Object.values(bettors).every((el,index,arr) => el === arr[0]) && betCount <=
 
 		else 
 		{
-		const min1 = Math.min(...Object.values(allInPot));
-		pot -= (min1-min2);
-		deck.winning((min1-min2),stack);
-		for (let key in allInPot) {
-			if (allInPot[key] === min1) {
-				delete allInPot[key];
-				delete bettors[key];
-				
-					}
-				}
-			min2 = min1;
-			}
+			calcAll();
 		}
-			
+		}
 			
 		}
 
