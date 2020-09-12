@@ -12,7 +12,8 @@ let allInPot = {};
 let betAmount = [];
 // create a set for everyone in the game
 players.forEach((el,i) => {
-	stack.push(Math.abs(Math.floor(Math.random() * 1000)));
+	// stack.push(Math.abs(Math.floor(Math.random() * 1000)));
+	stack.push(3);
 	const playerDiv = document.createElement('div');
 	playerDiv.className = `player${i+1}`;
 	document.querySelector('.firstDeal').appendChild(playerDiv);
@@ -44,6 +45,9 @@ const whatBet = document.createElement('div');
 	whatBet.setAttribute('style', 'position: absolute; left: 40%; top: 20%');
 
 	});
+
+
+
 
 
 function init(begginerPlayer) {
@@ -134,8 +138,6 @@ betAmount.push(smallBlindValue);
 
 pot += bigBlindValue + smallBlindValue;
 
-stack[big-1] -= bigBlindValue;
-stack[small-1] -= smallBlindValue;
 
 document.querySelector(`.player${big}`).querySelector('.stackBox').textContent -= bigBlindValue;
 document.querySelector(`.player${small}`).querySelector('.stackBox').textContent -= smallBlindValue;
@@ -176,13 +178,23 @@ raiseBtn.className = 'sliderNumber';
 document.querySelector(`.active`).appendChild(raiseBar);
 buttonR.appendChild(raiseBtn);
 
+if (stack[begginerPlayer-1] > bigBlindValue*2) {
 raiseBtn.textContent = bigBlindValue*2;
+} else if (stack[begginerPlayer-1] > bigBlindValue) {
+	raiseBtn.textContent = stack[begginerPlayer];
+} else {
+	buttonR.disabled = true;
+	buttonR.style.display = 'none';
+	raiseBar.style.display = 'none';
+}
+
+
 
 
 
 // allow for instances of big Blind/small blind taking them over the all in limit
 
-
+if (buttonR.disabled = false) {
 const inputRaise = document.createElement("input");
 inputRaise.className = 'inputRaise';
 const placeholder = document.createAttribute('placeholder');
@@ -232,11 +244,17 @@ inputRaise.oninput = function() {
 document.querySelector(`.player${begginerPlayer}`).appendChild(raiseBar);
 document.querySelector(`.player${begginerPlayer}`).appendChild(inputRaise);
 
+}
+
 
 // because the first player needs to call the big blind
 const callNum = document.createElement('div');
 callNum.className = 'callNum';
+if (stack[begginerPlayer-1] >=bigBlindValue) {
 callNum.textContent = bigBlindValue;
+} else {
+	callNum.textContent = stack[begginerPlayer-1];
+}
 
 buttonC.appendChild(callNum);
 const allActives = document.querySelectorAll('.active');
@@ -1254,10 +1272,13 @@ if (maxRaise*2 < stack[i]) {
 } if (maxRaise >= stack[i]) {
 	buttonR.disabled = true;
 	buttonR.style.display = 'none';
+	raiseBar.style.display = 'none';
 }
 
 
 // create inputRaise
+
+if (buttonR.disabled = false) {
 
 const inputRaise = document.createElement("input");
 inputRaise.className = 'inputRaise';
@@ -1306,7 +1327,8 @@ inputRaise.oninput = function() {
 
 document.querySelector(`.active`).appendChild(raiseBar);
 document.querySelector(`.active`).appendChild(inputRaise);
-
+inputRaise.setAttributeNode(inputMin);
+}
 
 // create html incase of calling
 const callNum = document.createElement('div');
@@ -1325,7 +1347,7 @@ if (callNum.textContent === '0') {
 buttonC.appendChild(callNum);
 
 
-inputRaise.setAttributeNode(inputMin);
+
 
 bet();
 
@@ -1580,18 +1602,12 @@ for (let key in allIn) {
 
 }
 
-// 
-
-
-
-
 if (Object.values(bettors).every((el,index,arr) => el === arr[0]) && betCount <= 0 && river && Object.values(bettors).length >1 && !winning) {
 	const active = document.querySelector('.active');
 	active.querySelectorAll('button, input').forEach(el => {
 	active.removeChild(el);
 	});
 	if (Object.keys(allInPot).length >0) {
-		const uniqueAllIns = [...new Set(Object.values(allInPot))];
 		let min2 = 0;
 		const allInInterval = setInterval(wait, 4000);
 	function wait() {
