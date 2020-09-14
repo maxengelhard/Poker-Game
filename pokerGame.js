@@ -1180,12 +1180,13 @@ newGame();
 
 const nextPlayer = function() {
 
-let maxRaise = 0;
+	
+	let maxRaise = 0;
+
 
 if (Object.keys(bettors).length > 0) {
 	
 	// itereate over the array to see what the highest bet is
-	// using plus two because of big and small blind
 	maxRaise = Object.values(bettors).reduce((maxNum, el) => {
 		if (maxNum < el) {
 			maxNum = el;
@@ -1198,7 +1199,6 @@ if (Object.keys(bettors).length > 0) {
 
 for (let i=1; i<=players.length; i++) {
 
-
 if (document.querySelector(`.player${i}`).classList.contains('active')) {
 document.querySelector(`.player${i}`).classList.remove('active');
 // this is to remove all the other buttons as well
@@ -1210,6 +1210,7 @@ buttons.querySelectorAll('button, input').forEach(el => {
 })
 
 
+
 document.querySelector(`.player${i%players.length +1}`).classList.add('active');
 
 
@@ -1219,8 +1220,6 @@ const buttonF = document.createElement("BUTTON");
 const raise = document.createTextNode(`Raise`);
 const check = document.createTextNode(`Call`);
 // just to change the name of it and if someone has bet see how much they have
-
-
 
 
 // it's moving to the next player before the flop in the flop and turns I have called next player function
@@ -1267,16 +1266,10 @@ if (maxRaise*2 < stack[i]) {
 	}
 } else if (maxRaise*2 > stack[i]) {
 	raiseBtn.textContent = stack[i];
-} if (maxRaise >= stack[i]) {
-	buttonR.disabled = true;
-	buttonR.style.display = 'none';
-	raiseBar.style.display = 'none';
 }
 
 
 // create inputRaise
-
-if (stack[i] > maxRaise) {
 
 const inputRaise = document.createElement("input");
 inputRaise.className = 'inputRaise';
@@ -1325,8 +1318,9 @@ inputRaise.oninput = function() {
 
 document.querySelector(`.active`).appendChild(raiseBar);
 document.querySelector(`.active`).appendChild(inputRaise);
-inputRaise.setAttributeNode(inputMin);
-}
+
+
+
 
 // create html incase of calling
 const callNum = document.createElement('div');
@@ -1335,15 +1329,22 @@ callNum.textContent = maxRaise - document.querySelector(`.betArea${i+1}`).textCo
 if (callNum.textContent > stack[i]) {
 	document.querySelector('.check').textContent = 'All In';
 	callNum.textContent = stack[i];
+	buttonR.disabled = true;
+	buttonR.style.display = 'none';
+	raiseBar.style.display = 'none';
+	inputRaise.style.display = 'none';
 
 }
 if (callNum.textContent === '0') {
 	document.querySelector('.check').textContent = 'Check';
 	callNum.style.display = 'none';
+	inputMin.value = 0;
+	raiseBar.setAttribute('min',0);
+	
 }
 
 buttonC.appendChild(callNum);
-
+inputRaise.setAttributeNode(inputMin);
 
 
 
@@ -1491,8 +1492,7 @@ const bet = function() {
 	// for raising
 	
 document.querySelector(`.player${i+1}`).querySelector('.raise').addEventListener('click', function () {
-	amount += Number(this.children[0].textContent);
-
+	amount = Number(this.children[0].textContent);
 	// too calcuale raising / callinig
 	const maxCall = Object.values(bettors).reduce((max,el) => {if (el > max) {
 		max = el}
@@ -1607,20 +1607,6 @@ if (Object.values(bettors).every((el,index,arr) => el === arr[0]) && betCount <=
 	});
 	if (Object.keys(allInPot).length >0) {
 		let min2 = 0;
-		function calcAll() {
-			const min1 = Math.min(...Object.values(allInPot));
-			pot -= (min1-min2);
-			deck.winning((min1-min2),stack);
-			for (let key in allInPot) {
-				if (allInPot[key] === min1) {
-					delete allInPot[key];
-					delete bettors[key];
-					
-						}
-					}
-				min2 = min1;
-				}
-				calcAll();
 		const allInInterval = setInterval(wait, 4000);
 	function wait() {
 		if (Object.keys(allInPot).length ===0) {
@@ -1635,7 +1621,17 @@ if (Object.values(bettors).every((el,index,arr) => el === arr[0]) && betCount <=
 
 		else 
 		{
-			calcAll();
+			const min1 = Math.min(...Object.values(allInPot));
+			pot -= (min1-min2);
+			deck.winning((min1-min2),stack);
+			for (let key in allInPot) {
+				if (allInPot[key] === min1) {
+					delete allInPot[key];
+					delete bettors[key];
+					
+						}
+					}
+				min2 = min1;
 		}
 		}
 			
@@ -1686,7 +1682,7 @@ if (Object.values(bettors).every((el,index,arr) => el === arr[0]) && betCount <=
 		}
 
 		for (let i=0; i<bettors.length -allIn.length;i++) {
-			nextPlayer(flop);
+			nextPlayer();
 		}
 
 
@@ -1705,6 +1701,7 @@ if (Object.values(bettors).every((el,index,arr) => el === arr[0]) && betCount <=
 			
 			// need to call next players so that calculations will reset
 		}
+	
 		for (let i=0; i<bettors.length -allIn.length;i++) {
 			nextPlayer();
 		}
@@ -1736,9 +1733,11 @@ if (Object.values(bettors).every((el,index,arr) => el === arr[0]) && betCount <=
 	// this will just make sure that after flops people can still riase(had a bug that wouldn't account for that)
 	if (!winning) {
 	const currentPlayer = document.querySelector('.active').className.substring(6,7)-1;
+	const thisPlayer = document.querySelector(`.player${currentPlayer+1}`);
 	if (stack[currentPlayer] > Math.max(... Object.values(bettors))) {
-	document.querySelector(`.player${currentPlayer+1}`).querySelector('.raise').style.display = 'inline-block';
-	document.querySelector(`.player${currentPlayer+1}`).querySelector('.raise').disabled = false;
+	thisPlayer.style.display = 'inline-block';
+	thisPlayer.querySelector('.raise').disabled = false;
+	
 		}
 	}
 
